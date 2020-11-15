@@ -1,0 +1,27 @@
+﻿@model StudentRating.Models.Rating
+@{
+    ViewBag.Title = "Edit Rating Student";
+}
+
+<div class="text-center">
+    <h3>Edit student rating</h3>  
+    <form method="post" class="form-group">
+        <select name="StudentId" class="form-control">
+            <option value="@ViewBag.StSubRat.Student.Id">@ViewBag.StSubRat.Student.LastName @ViewBag.StSubRat.Student.FirstName</option>
+            @foreach (var student in ViewBag.Students)
+            {
+                <option value="@student.Id">@student.LastName @student.FirstName</option>
+            }
+        </select><hr />
+        <select name="SubjectId" class="form-control">
+            <option value="@ViewBag.StSubRat.Subject.Id">@ViewBag.StSubRat.Subject.Name</option>
+            @foreach (var subject in ViewBag.Subjects)
+            {
+                <option value="@subject.Id">@subject.Name</option>
+            }
+        </select><hr />
+        <input type="number" class="form-control" name="Mark" value="@ViewBag.StSubRat.Rating.Mark" /><br /><hr />
+        <input type="date" class="form-control" name="DateRating" value="@ViewBag.StSubRat.Rating.DateRating.ToString("yyyy-MM-dd")" /><br /><hr />
+        <input type="submit" value="Change" class="btn btn-default" /><hr />
+    </form>
+</div>

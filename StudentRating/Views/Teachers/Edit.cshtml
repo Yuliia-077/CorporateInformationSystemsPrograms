@@ -1,0 +1,14 @@
+﻿@model StudentRating.Models.Teacher
+@{
+    ViewBag.Title = "Edit teacher";
+ }
+
+<div class="text-center">
+    <h3>Edit teacher</h3>  
+    <form method="post" class="form-group">
+        <input type="text" class="form-control" name="LastName" placeholder="Last name" value="@Model.LastName"/><hr />
+        <input type="text" class="form-control" name="FirstName" placeholder="First name" value="@Model.FirstName"/> <hr />
+        <input type="text" class="form-control" name="MiddleName" placeholder="Middle name" value="@Model.MiddleName"/><hr />
+        <input type="submit" value="Change" class="btn btn-default" />
+    </form>
+</div>

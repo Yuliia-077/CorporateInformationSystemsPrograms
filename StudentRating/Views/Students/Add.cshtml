@@ -1,0 +1,20 @@
+﻿@model IEnumerable<StudentRating.Models.Student>
+@{
+    ViewBag.Title = "Add Rating Student";
+}
+
+<div class="text-center">
+    <h3>Add student</h3>
+    <form method="post" class="form-group">
+        <input type="text" class="form-control" name="LastName" placeholder="Last name" /><hr />
+        <input type="text" class="form-control" name="FirstName" placeholder="First name" /> <hr />
+        <input type="text" class="form-control" name="MiddleName" placeholder="Middle name" /><hr />
+        <input type="tel" class="form-control" name="PhoneNumber" placeholder="Phone number" /><hr />
+        <input type="date" class="form-control" name="DateOfBirth" /><hr />
+        <input type="text" class="form-control" name="Town" placeholder="Town" /><hr />
+        <input type="text" class="form-control" name="Street" placeholder="Street" /><hr />
+        <input type="number" class="form-control" name="NumberOfHouse" placeholder="Number of house" /><hr />
+        <input type="number" class="form-control" name="NumberOfFlat" placeholder="Number of flat" /><hr />
+        <input type="submit" value="Create" class="btn btn-default" />
+    </form>
+</div>

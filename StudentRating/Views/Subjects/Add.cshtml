@@ -1,0 +1,19 @@
+﻿@model IEnumerable<StudentRating.Models.Subject>
+@{
+    ViewBag.Title = "Add subject";
+}
+
+<div class="text-center">
+    <h3>Add subject</h3>
+    <form method="post" class="form-group">
+        <input type="number" class="form-control" name="MaxMark" placeholder="Maximum mark" /><hr />
+        <select name="TeacherId" class="form-control">
+            @foreach (var teacher in ViewBag.Teachers)
+            {
+                <option value="@teacher.Id">@teacher.LastName @teacher.FirstName @teacher.MiddleName</option>
+            }
+        </select><hr />
+        <input type="text" class="form-control" name="Name" placeholder="Name" /><hr />
+        <input type="submit" value="Create" class="btn btn-default" /><hr />
+    </form>
+</div>

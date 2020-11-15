@@ -1,0 +1,20 @@
+﻿@model StudentRating.Models.Subject
+@{
+    ViewBag.Title = "Edit subject";
+}
+
+<div class="text-center">
+    <h3>Edit subject</h3>
+    <form method="post" class="form-group">
+        <input type="text" class="form-control" name="Name" value="@ViewBag.SubTea.Subject.Name" /><hr />
+        <select name="TeacherId" class="form-control">
+        <option value="@ViewBag.SubTea.Subject.TeacherId">@ViewBag.SubTea.Teacher.LastName @ViewBag.SubTea.Teacher.FirstName @ViewBag.SubTea.Teacher.MiddleName</option>
+            @foreach (var teacher in ViewBag.Teachers)
+            {
+                <option value="@teacher.Id">@teacher.LastName @teacher.FirstName @teacher.MiddleName</option>
+            }
+        </select><hr />
+        <input type="number" class="form-control" name="MaxMark" value="@ViewBag.SubTea.Subject.MaxMark" /><hr />
+        <input type="submit" value="Change" class="btn btn-default" /><hr />
+    </form>
+</div>
