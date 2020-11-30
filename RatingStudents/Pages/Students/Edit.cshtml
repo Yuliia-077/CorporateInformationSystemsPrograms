@@ -1,0 +1,19 @@
+﻿@page "{id:int}"
+@model RatingStudents.Pages.Students.ChangeModel
+@{
+}
+<div class="text-center">
+    <h3>Edit student</h3>
+    <form method="post" class="form-group">
+        <input type="text" class="form-control" name="LastName" placeholder="Last name" value="@Model.Student.LastName" /><hr />
+        <input type="text" class="form-control" name="FirstName" placeholder="First name" value="@Model.Student.FirstName" /> <hr />
+        <input type="text" class="form-control" name="MiddleName" placeholder="Middle name" value="@Model.Student.MiddleName" /><hr />
+        <input type="tel" class="form-control" name="PhoneNumber" placeholder="Phone number" value="@Model.Student.PhoneNumber" /><hr />
+        <input type="date" class="form-control" name="DateOfBirth" value="@Model.Student.DateOfBirth.ToString("yyyy-MM-dd")" /><hr />
+        <input type="text" class="form-control" name="Town" placeholder="Town" value="@Model.Student.Town" /><hr />
+        <input type="text" class="form-control" name="Street" placeholder="Street" value="@Model.Student.Street" /><hr />
+        <input type="number" class="form-control" name="NumberOfHouse" placeholder="Number of house" value="@Model.Student.NumberOfHouse" /><hr />
+        <input type="number" class="form-control" name="NumberOfFlat" placeholder="Number of flat" value="@Model.Student.NumberOfFlat" /><hr />
+        <input type="submit" value="Change" class="btn btn-default" />
+    </form>
+</div>

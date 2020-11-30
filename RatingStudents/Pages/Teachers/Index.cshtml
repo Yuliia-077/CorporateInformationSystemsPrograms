@@ -1,0 +1,30 @@
+﻿@page 
+@model RatingStudents.Pages.Teachers.IndexModel
+@{
+    ViewData["Title"] = "Teachers";
+}
+<div class="text-center">
+    <h3>Teachers</h3>
+    <a asp-page="Add">Add teacher</a>
+    <form method="post">
+        <table>
+            <tr>
+                <th>Last name</th>
+                <th>First name</th>
+                <th>Middle name</th>
+                <th>Change</th>
+                <th>Remove</th>
+            </tr>
+            @foreach (var teacher in Model.Teachers)
+            {
+                <tr>
+                    <td> @teacher.LastName </td>
+                    <td> @teacher.FirstName </td>
+                    <td> @teacher.MiddleName </td>
+                    <td><a href="~/Teachers/Edit/@teacher.Id"><i class="far fa-edit"></i></a></td>
+                    <td><button asp-page-handler="Delete" asp-route-id="@teacher.Id" onclick="return confirm('Do you want to remove information about this teacher?');"><i class="far fa-trash-alt"></i></button></td>
+                </tr>
+            }
+        </table>
+    </form>
+</div>

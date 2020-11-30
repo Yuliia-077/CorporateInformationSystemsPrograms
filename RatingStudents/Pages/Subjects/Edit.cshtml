@@ -1,0 +1,19 @@
+﻿@page "{id:int}"
+@model RatingStudents.Pages.Subjects.ChangeModel
+@{
+}
+<div class="text-center">
+    <h3>Edit subject</h3>
+    <form method="post" class="form-group">
+        <input type="text" class="form-control" name="Name" value="@Model.SubjectTeacher.Subject.Name" /><hr />
+        <select name="TeacherId" class="form-control">
+            <option value="@Model.SubjectTeacher.Subject.TeacherId">@Model.SubjectTeacher.Teacher.LastName @Model.SubjectTeacher.Teacher.FirstName @Model.SubjectTeacher.Teacher.MiddleName</option>
+            @foreach (var teacher in Model.Teachers)
+            {
+                <option value="@teacher.Id">@teacher.LastName @teacher.FirstName @teacher.MiddleName</option>
+            }
+        </select><hr />
+        <input type="number" class="form-control" name="MaxMark" value="@Model.SubjectTeacher.Subject.MaxMark" /><hr />
+        <input type="submit" value="Change" class="btn btn-default" /><hr />
+    </form>
+</div>

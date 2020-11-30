@@ -1,0 +1,26 @@
+﻿@page "{id:int}"
+@model RatingStudents.Pages.EditModel
+@{
+}
+<div class="text-center">
+    <h3>Edit student rating</h3>
+    <form method="post" class="form-group">
+        <select name="StudentId" class="form-control">
+            <option value="@Model.StudentSubjectRating.Student.Id">@Model.StudentSubjectRating.Student.LastName @Model.StudentSubjectRating.Student.FirstName</option>
+            @foreach (var student in Model.Students)
+            {
+                <option value="@student.Id">@student.LastName @student.FirstName</option>
+            }
+        </select><hr />
+        <select name="SubjectId" class="form-control">
+            <option value="@Model.StudentSubjectRating.Subject.Id">@Model.StudentSubjectRating.Subject.Name</option>
+            @foreach (var subject in Model.Subjects)
+            {
+                <option value="@subject.Id">@subject.Name</option>
+            }
+        </select><hr />
+        <input type="number" class="form-control" name="Mark" value="@Model.StudentSubjectRating.Rating.Mark" /><br /><hr />
+        <input type="date" class="form-control" name="DateRating" value="@Model.StudentSubjectRating.Rating.DateRating.ToString("yyyy-MM-dd")" /><br /><hr />
+        <input type="submit" value="Change" class="btn btn-default" /><hr />
+    </form>
+</div>

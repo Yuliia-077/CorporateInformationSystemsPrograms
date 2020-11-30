@@ -1,0 +1,30 @@
+﻿@page 
+@model RatingStudents.Pages.Subjects.IndexModel
+@{
+    ViewData["Title"] = "Subjects";
+}
+<div class="text-center">
+    <h3>Subjects</h3>
+    <a asp-page="Add">Add subject</a>
+    <form method="post">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Teacher</th>
+                <th>Maximun mark</th>
+                <th>Change</th>
+                <th>Remove</th>
+            </tr>
+            @foreach (var subject in Model.Subjects)
+            {
+                <tr>
+                    <td> @subject.Subject.Name</td>
+                    <td> @subject.Teacher.LastName  @subject.Teacher.FirstName @subject.Teacher.MiddleName</td>
+                    <td> @subject.Subject.MaxMark </td>
+                    <td><a href="~/Subjects/Edit/@subject.Subject.Id"><i class="far fa-edit"></i></a></td>
+                    <td><button asp-page-handler="Delete" asp-route-id="@subject.Subject.Id" onclick="return confirm('Do you want to remove information about this subject?');"><i class="far fa-trash-alt"></i></button></td>
+                </tr>
+            }
+        </table>
+    </form>
+</div>

@@ -1,0 +1,13 @@
+﻿@page "{id:int}"
+@model RatingStudents.Pages.Teachers.ChangeModel
+@{
+}
+<div class="text-center">
+    <h3>Edit student</h3>
+    <form method="post" class="form-group">
+        <input type="text" class="form-control" name="LastName" placeholder="Last name" value="@Model.Teacher.LastName" /><hr />
+        <input type="text" class="form-control" name="FirstName" placeholder="First name" value="@Model.Teacher.FirstName" /> <hr />
+        <input type="text" class="form-control" name="MiddleName" placeholder="Middle name" value="@Model.Teacher.MiddleName" /><hr />
+        <input type="submit" value="Change" class="btn btn-default" />
+    </form>
+</div>
