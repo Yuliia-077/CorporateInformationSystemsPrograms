@@ -34,7 +34,6 @@ namespace RatingStudents
             services.AddScoped<RatingService>();
             services.AddScoped<SubjectService>();
             services.AddScoped<TeacherService>();
-            services.AddScoped<StudentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

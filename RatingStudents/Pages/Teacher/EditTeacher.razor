@@ -1,20 +1,20 @@
-﻿@page "/editSubject/{CurrentId}"
+﻿@page "/editTeacher/{CurrentId}"
 @using RatingStudents.Data
-@inject SubjectService subService
+@inject TeacherService teacherService
 @inject NavigationManager NavMan
 
-<h2>Edit subject</h2>
+<h2>Edit teacher</h2>
 <hr />
 
 <form>
     <div class="col-8">
-        <input type="text" class="form-control" @bind="@subject.Name" />
-        <input type="number" class="form-control" placeholder="Subject id" @bind="@subject.TeacherId" />
-        <input type="number" class="form-control" placeholder="Mark" @bind="@subject.MaxMark" />
+        <input type="text" class="form-control" placeholder="Last name" @bind="@teacher.LastName" />
+        <input type="text" class="form-control" placeholder="First name" @bind="@teacher.FirstName" />
+        <input type="text" class="form-control" placeholder="Middle name" @bind="@teacher.MiddleName" />
     </div>
     <div class="row">
         <div class="col-4">
-            <input type="button" class="btn btn-dark" @onclick="@UpdateSubject" value="Update" />
+            <input type="button" class="btn btn-dark" @onclick="@UpdateTeacher" value="Update" />
             <input type="button" class="btn btn-dark" @onclick="@Cancel" value="Cancel" />
         </div>
     </div>
@@ -23,20 +23,20 @@
 @code {
     [Parameter]
     public string CurrentId { get; set; }
-    Data.Subject subject = new Data.Subject();
+    Data.Teacher teacher = new Data.Teacher();
 
     protected override async Task OnInitializedAsync()
     {
-        subject = await Task.Run(() => subService.GetSubject(Convert.ToInt32(CurrentId)));
+        teacher = await Task.Run(() => teacherService.GetTeacher(Convert.ToInt32(CurrentId)));
     }
 
-    protected void UpdateSubject()
+    protected void UpdateTeacher()
     {
-        subService.Edit(subject);
-        NavMan.NavigateTo("subject");
+        teacherService.Edit(teacher);
+        NavMan.NavigateTo("teachers");
     }
     void Cancel()
     {
-        NavMan.NavigateTo("subject");
+        NavMan.NavigateTo("teachers");
     }
 }

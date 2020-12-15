@@ -5,51 +5,51 @@ using System.Threading.Tasks;
 
 namespace RatingStudents.Data
 {
-    public class SubjectService
+    public class TeacherService
     {
             readonly StudentRatingContext _db;
 
-            public SubjectService(StudentRatingContext context)
+            public TeacherService(StudentRatingContext context)
             {
                 _db = context;
             }
 
-            public List<Subject> GetSubjects()
+            public List<Teacher> GetTeachers()
             {
-                var subjectsList = _db.Subjects.ToList();
-                List<Subject> subjects = new List<Subject>();
-                foreach (var rat in subjectsList)
+                var teachersList = _db.Teachers.ToList();
+                List<Teacher> teachers = new List<Teacher>();
+                foreach (var rat in teachersList)
                 {
-                    Subject subject = rat;
-                    subjects.Add(subject);
+                    Teacher teacher = rat;
+                    teachers.Add(teacher);
 
                 }
-                return subjects;
+                return teachers;
             }
 
-            public string Create(Subject subject)
+            public string Create(Teacher teacher)
             {
-                _db.Subjects.Add(subject);
+                _db.Teachers.Add(teacher);
                 _db.SaveChanges();
                 return "Add successfully";
             }
 
-            public Subject GetSubject(int id)
+            public Teacher GetTeacher(int id)
             {
-                Subject subject = _db.Subjects.FirstOrDefault(p => p.Id == id);
-                return subject;
+                Teacher teacher = _db.Teachers.FirstOrDefault(p => p.Id == id);
+                return teacher;
             }
 
-            public string Edit(Subject subject)
+            public string Edit(Teacher teacher)
             {
-                _db.Subjects.Update(subject);
+                _db.Teachers.Update(teacher);
                 _db.SaveChanges();
                 return "Edit succesfully";
             }
 
-            public string Delete(Subject subject)
+            public string Delete(Teacher teacher)
             {
-                _db.Subjects.Remove(subject);
+                _db.Teachers.Remove(teacher);
                 _db.SaveChanges();
                 return "Delete succesfully";
 
