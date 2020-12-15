@@ -1,0 +1,43 @@
+﻿@page "/editRating/{CurrentId}"
+@using RatingStudents.Data
+@inject RatingService ratService
+@inject NavigationManager NavMan
+
+<h2>Edit rating</h2>
+<hr />
+
+<form>
+    <div class="col-8">
+        <input type="number" class="form-control" @bind="@rating.StudentId" />
+        <input type="number" class="form-control" placeholder="Subject id" @bind="@rating.SubjectId" />
+        <input type="number" class="form-control" placeholder="Mark" @bind="@rating.Mark" />
+        <input type="date" class="form-control" @bind="@rating.DateRating" />
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <input type="button" class="btn btn-dark" @onclick="@UpdateRating" value="Update" />
+            <input type="button" class="btn btn-dark" @onclick="@Cancel" value="Cancel" />
+        </div>
+    </div>
+</form>
+
+@code {
+    [Parameter]
+    public string CurrentId { get; set; }
+    RatingStudents.Data.Rating rating = new Data.Rating();
+
+    protected override async Task OnInitializedAsync()
+    {
+        rating = await Task.Run(() => ratService.GetRating(Convert.ToInt32(CurrentId)));
+    }
+
+    protected void UpdateRating()
+    {
+        ratService.Edit(rating);
+        NavMan.NavigateTo("rating");
+    }
+    void Cancel()
+    {
+        NavMan.NavigateTo("Rating");
+    }
+}

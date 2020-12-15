@@ -1,0 +1,54 @@
+﻿@page "/subject"
+@using RatingStudents.Data
+@inject SubjectService subjectService
+
+<NavLink class="nav-link" href="addSubject">
+    <span class="oi oi-plus" aria-hidden="true"></span>Add new
+</NavLink>
+
+<h1>Subject information</h1>
+@if(subjects == null)
+{
+    <p><em>Loading ...</em></p>
+}
+else
+{
+<table class="table-bordered text-center">
+    <thead>
+        <tr>
+            <th>Id </th>
+            <th>Name </th>
+            <th>Teacher id </th>
+            <th>Max mark </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var rat in subjects)
+        {
+            <tr>
+                <td>@rat.Id</td>
+                <td>@rat.Name</td>
+                <td>@rat.TeacherId</td>
+                <td>@rat.MaxMark</td>
+                <td><a class="nav-link" href="editSubject/@rat.Id">Edit</a></td>
+                <td><a class="nav-link" href="deleteSubject/@rat.Id">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+}
+
+@code {
+    List<RatingStudents.Data.Subject> subjects;
+    protected override async Task OnInitializedAsync()
+    {
+        subjects = await Task.Run(() => subjectService.GetSubjects());
+    }
+    /*protected override async Task OnInitializedAsync()
+{
+    subjects = await Task.Run(() => subjectService.GetSubjects());
+}*/
+}

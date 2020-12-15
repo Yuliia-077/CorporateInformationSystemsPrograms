@@ -1,0 +1,42 @@
+﻿@page "/editSubject/{CurrentId}"
+@using RatingStudents.Data
+@inject SubjectService subService
+@inject NavigationManager NavMan
+
+<h2>Edit subject</h2>
+<hr />
+
+<form>
+    <div class="col-8">
+        <input type="text" class="form-control" @bind="@subject.Name" />
+        <input type="number" class="form-control" placeholder="Subject id" @bind="@subject.TeacherId" />
+        <input type="number" class="form-control" placeholder="Mark" @bind="@subject.MaxMark" />
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <input type="button" class="btn btn-dark" @onclick="@UpdateSubject" value="Update" />
+            <input type="button" class="btn btn-dark" @onclick="@Cancel" value="Cancel" />
+        </div>
+    </div>
+</form>
+
+@code {
+    [Parameter]
+    public string CurrentId { get; set; }
+    Data.Subject subject = new Data.Subject();
+
+    protected override async Task OnInitializedAsync()
+    {
+        subject = await Task.Run(() => subService.GetSubject(Convert.ToInt32(CurrentId)));
+    }
+
+    protected void UpdateSubject()
+    {
+        subService.Edit(subject);
+        NavMan.NavigateTo("subject");
+    }
+    void Cancel()
+    {
+        NavMan.NavigateTo("subject");
+    }
+}

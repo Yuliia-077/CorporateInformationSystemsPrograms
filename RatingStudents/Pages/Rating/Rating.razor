@@ -1,0 +1,52 @@
+﻿@page "/rating"
+@using RatingStudents.Data
+@inject RatingService ratService
+
+<NavLink class="nav-link" href="addRating">
+    <span class="oi oi-plus" aria-hidden="true"></span>Add new
+</NavLink>
+
+<h1>Rating information</h1>
+@if(ratings == null)
+{
+    <p><em>Loading ...</em></p>
+}
+else
+{
+<table class="table-bordered text-center">
+    <thead>
+        <tr>
+            <th>Id </th>
+            <th>Student </th>
+            <th>Subject </th>
+            <th>Mark </th>
+            <th>Date </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var rat in ratings)
+        {
+            <tr>
+                <td>@rat.Id</td>
+                <td>@rat.StudentId</td>
+                <td>@rat.SubjectId</td>
+                <td>@rat.Mark</td>
+                <td>@rat.DateRating</td>
+                <td><a class="nav-link" href="editRating/@rat.Id">Edit</a></td>
+                <td><a class="nav-link" href="deleteRating/@rat.Id">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+}
+
+@code {
+    List<RatingStudents.Data.Rating> ratings;
+    protected override async Task OnInitializedAsync()
+    {
+        ratings = await Task.Run(() => ratService.GetRatings());
+    }
+}

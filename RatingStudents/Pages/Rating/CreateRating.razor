@@ -1,0 +1,36 @@
+﻿@page "/addRating"
+@using RatingStudents.Data
+@inject RatingService ratService
+@inject NavigationManager NavMan
+
+<h2>Add rating</h2>
+<hr />
+
+<form>
+    <div class="col-8">
+        <input type="number" class="form-control" placeholder="Student id" @bind="@rating.StudentId"/>
+        <input type="number" class="form-control" placeholder="Subject id" @bind="@rating.SubjectId"/>
+        <input type="number" class="form-control" placeholder="Mark" @bind="@rating.Mark"/>
+        <input type="date" class="form-control" @bind="@rating.DateRating"/>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <input type="button" class="btn btn-dark" @onclick="@AddRating" value="Save" />
+            <input type="button" class="btn btn-dark" @onclick="@Cancel" value="Cancel" />
+        </div>
+    </div>
+</form>
+
+@code {
+    RatingStudents.Data.Rating rating = new Data.Rating();
+
+    protected void AddRating()
+    {
+        ratService.Create(rating);
+        NavMan.NavigateTo("rating");
+    }
+    void Cancel()
+    {
+        NavMan.NavigateTo("Rating");
+    }
+}

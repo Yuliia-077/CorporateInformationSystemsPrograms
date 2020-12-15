@@ -1,0 +1,35 @@
+﻿@page "/addSubject"
+@using RatingStudents.Data
+@inject SubjectService subService
+@inject NavigationManager NavMan
+
+<h2>Add subject</h2>
+<hr />
+
+<form>
+    <div class="col-8">
+        <input type="text" class="form-control" placeholder="Name" @bind="@subject.Name"/>
+        <input type="number" class="form-control" placeholder="Teacher id" @bind="@subject.TeacherId"/>
+        <input type="number" class="form-control" placeholder="Max mark" @bind="@subject.MaxMark"/>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <input type="button" class="btn btn-dark" @onclick="@AddSubject" value="Save" />
+            <input type="button" class="btn btn-dark" @onclick="@Cancel" value="Cancel" />
+        </div>
+    </div>
+</form>
+
+@code {
+    RatingStudents.Data.Subject subject = new Data.Subject();
+
+    protected void AddSubject()
+    {
+        subService.Create(subject);
+        NavMan.NavigateTo("subject");
+    }
+    void Cancel()
+    {
+        NavMan.NavigateTo("Subject");
+    }
+}

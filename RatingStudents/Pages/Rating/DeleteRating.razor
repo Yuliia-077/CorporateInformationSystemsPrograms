@@ -1,0 +1,45 @@
+﻿@page "/deleteRating/{CurrentId}"
+@using RatingStudents.Data
+@inject RatingService ratService
+@inject NavigationManager NavMan
+
+<h2>Delete Rating</h2>
+<hr />
+<h4>Are you sure want to delete this?</h4>
+<div class="row">
+    <div class="col-8">
+        <strong>StudentId: </strong><p>@rating.StudentId</p>
+        <strong>SubjectId: </strong><p>@rating.SubjectId</p>
+        <strong>Mark: </strong><p>@rating.Mark</p>
+        <strong>Date: </strong><p>@rating.DateRating</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-4">
+        <input type="button" class="btn btn-dark" @onclick="@RemoveRating" value="Delete" />
+        <input type="button" class="btn btn-dark" @onclick="@Cancel" value="Cancel" />
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string CurrentId { get; set; }
+    RatingStudents.Data.Rating rating = new Data.Rating();
+
+    protected override async Task OnInitializedAsync()
+    {
+        rating = await Task.Run(() => ratService.GetRating(Convert.ToInt32(CurrentId)));
+    }
+
+    protected void RemoveRating()
+    {
+        ratService.Delete(rating);
+        NavMan.NavigateTo("rating");
+    }
+    void Cancel()
+    {
+        NavMan.NavigateTo("Rating");
+    }
+
+}
