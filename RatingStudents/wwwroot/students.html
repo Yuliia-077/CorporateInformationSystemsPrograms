@@ -1,0 +1,270 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Students</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <h2 class="text-center">Students</h2>
+    <div class="container-fluid text-center">
+        <div class="row">
+            <div class="col-3">
+                <a href="index.html" class="nav-link">Rating</a>
+                <a href="subjects.html" class="nav-link">Subjects</a>
+                <a href="teachers.html" class="nav-link">Teachers</a>
+                <a href="students.html" class="nav-link">Students</a>
+            </div>
+            <div class="col-6">
+                <form name="studentForm" class="form">
+                    <input type="hidden" name="id" value="0" />
+                    <div class="form-group col-12">
+                        <label for="lastName">Last name:</label>
+                        <input class="form-control" name="lastName" type="text" />
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="firstName">First name:</label>
+                        <input class="form-control" name="firstName" type="text" />
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="middleName">Middle name:</label>
+                        <input class="form-control" name="middleName" type="text" />
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="phoneNumber">Phone number:</label>
+                        <input class="form-control" name="phoneNumber" type="tel" />
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="dateOfBirth">Date of birth:</label>
+                        <input class="form-control" name="dateOfBirth" type="date" />
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="town">Towm:</label>
+                        <input class="form-control" name="town" type="text" />
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="street">Street:</label>
+                        <input class="form-control" name="street" type="text" />
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="numberOfHouse">Number of House:</label>
+                        <input class="form-control" name="numberOfHouse" type="number" />
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="numberOfFlat">Number of flat:</label>
+                        <input class="form-control" name="numberOfFlat" type="number" />
+                    </div>
+                    <div class="panel-body">
+                        <button type="submit" id="submit" class="btn btn-dark">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br />
+    <table class="table table-condensed table-striped  col-md-12">
+        <thead><tr><th>Last name</th><th>First name</th><th>Middle name</th><th>Phone number</th><th>Date of Birth</th><th>Town</th><th>Street</th><th>House</th><th>Flat</th><th></th></tr></thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        async function GetStudents() {
+            const response = await fetch("/api/Students", {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+            if (response.ok === true) {
+                const students = await response.json();
+                let rows = document.querySelector("tbody");
+                students.forEach(student => {
+                    rows.append(row(student));
+                });
+            }
+        }
+
+        async function GetStudent(id) {
+            const response = await fetch("/api/Students/" + id, {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+            if (response.ok === true) {
+                const student = await response.json();
+                const form = document.forms["studentForm"];
+                form.elements["id"].value = student.id;
+                form.elements["lastName"].value = student.lastName;
+                form.elements["middleName"].value = student.middleName;
+                form.elements["firstName"].value = student.firstName;
+                form.elements["phoneNumber"].value = student.phoneNumber;
+                form.elements["dateOfBirth"].value = student.dateOfBirth;
+                form.elements["town"].value = student.town;
+                form.elements["street"].value = student.street;
+                form.elements["numberOfHouse"].value = student.numberOfHouse;
+                form.elements["numberOfFlat"].value = student.numberOfFlat;
+            }
+        }
+
+        async function CreateStudent(stLastName, stFirstName, stMiddleName, stPhone, stDateOfBirth, stTown, stStreet, stHouse, stFlat) {
+            const response = await fetch("api/Students", {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    lastName: stLastName,
+                    firstName: stFirstName,
+                    middleName: stMiddleName,
+                    phoneNumber: stPhone,
+                    dateOfBirth: stDateOfBirth,
+                    town: stTown,
+                    street: stStreet,
+                    numberOfHouse: parseInt(stHouse, 10),
+                    numberOfFlat: parseInt(stFlat, 10)
+                })
+            });
+            if (response.ok === true) {
+                const student = await response.json();
+                reset();
+                document.querySelector("tbody").append(row(student));
+            }
+        }
+
+        async function EditStudent(stId, stLastName, stFirstName, stMiddleName, stPhone, stDateOfBirth, stTown, stStreet, stHouse, stFlat) {
+            const response = await fetch("api/Students/" + stId, {
+                method: "PUT",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    id: parseInt(stId, 10),
+                    lastName: stLastName,
+                    firstName: stFirstName,
+                    middleName: stMiddleName,
+                    phoneNumber: stPhone,
+                    dateOfBirth: stDateOfBirth,
+                    town: stTown,
+                    street: stStreet,
+                    numberOfHouse: parseInt(stHouse, 10),
+                    numberOfFlat: parseInt(stFlat, 10)
+                })
+            });
+            if (response.ok === true) {
+                const student = await response.json();
+                reset();
+                document.querySelector("tr[data-rowid='" + student.id + "']").replaceWith(row(student));
+            }
+        }
+
+        async function DeleteStudent(id) {
+            const result = confirm("Do you want to delete this student?");
+            if (result == true) {
+                const response = await fetch("/api/Students/" + id, {
+                    method: "DELETE",
+                    headers: { "Accept": "application/json" }
+                });
+                if (response.ok === true) {
+                    const student = await response.json();
+                    document.querySelector("tr[data-rowid='" + student.id + "']").remove();
+                }
+            }
+        }
+
+        document.forms["studentForm"].addEventListener("submit", e => {
+            e.preventDefault();
+            const form = document.forms["studentForm"];
+            const id = form.elements["id"].value;
+            const lastName = form.elements["lastName"].value;
+            const firstName = form.elements["firstName"].value;
+            const middleName = form.elements["middleName"].value;
+            const phoneNumber = form.elements["phoneNumber"].value;
+            const dateOfBirth = form.elements["dateOfBirth"].value;
+            const town = form.elements["town"].value;
+            const street = form.elements["street"].value;
+            const numberOfHouse = form.elements["numberOfHouse"].value;
+            const numberOfFlat = form.elements["numberOfFlat"].value;
+            if (id == 0)
+                CreateStudent(lastName, firstName, middleName, phoneNumber, dateOfBirth, town, street, numberOfHouse, numberOfFlat);
+            else
+                EditStudent(id, lastName, firstName, middleName, phoneNumber, dateOfBirth, town, street, numberOfHouse, numberOfFlat);
+        });
+
+        function reset() {
+            const form = document.forms["studentForm"];
+            form.reset();
+            form.elements["id"].value = 0;
+        }
+
+        function row(student) {
+
+            const tr = document.createElement("tr");
+            tr.setAttribute("data-rowid", student.id);
+
+            const lastNameTd = document.createElement("td");
+            lastNameTd.append(student.lastName);
+            tr.append(lastNameTd);
+
+            const firstNameTd = document.createElement("td");
+            firstNameTd.append(student.firstName);
+            tr.append(firstNameTd);
+
+            const middleNameTd = document.createElement("td");
+            middleNameTd.append(student.middleName);
+            tr.append(middleNameTd);
+
+            const phoneNumberTd = document.createElement("td");
+            phoneNumberTd.append(student.phoneNumber);
+            tr.append(phoneNumberTd);
+
+            const dateOfBirthTd = document.createElement("td");
+            dateOfBirthTd.append(student.dateOfBirth);
+            tr.append(dateOfBirthTd);
+
+            const townTd = document.createElement("td");
+            townTd.append(student.town);
+            tr.append(townTd);
+
+            const streetTd = document.createElement("td");
+            streetTd.append(student.street);
+            tr.append(streetTd);
+
+            const numberOfHouseTd = document.createElement("td");
+            numberOfHouseTd.append(student.numberOfHouse);
+            tr.append(numberOfHouseTd);
+
+            const numberOfFlatTd = document.createElement("td");
+            numberOfFlatTd.append(student.numberOfFlat);
+            tr.append(numberOfFlatTd);
+
+            const linksTd = document.createElement("td");
+
+            const editLink = document.createElement("a");
+            editLink.setAttribute("data-id", student.id);
+            editLink.setAttribute("style", "cursor:pointer;padding:15px;");
+            editLink.append("Edit");
+            editLink.addEventListener("click", e => {
+
+                e.preventDefault();
+                GetStudent(student.id);
+            });
+            linksTd.append(editLink);
+
+            const removeLink = document.createElement("a");
+            removeLink.setAttribute("data-id", student.id);
+            removeLink.setAttribute("style", "cursor:pointer;padding:15px;");
+            removeLink.append("Delete");
+            removeLink.addEventListener("click", e => {
+
+                e.preventDefault();
+                DeleteStudent(student.id);
+            });
+
+            linksTd.append(removeLink);
+
+            tr.appendChild(linksTd);
+
+            return tr;
+        }
+
+        // загрузка пользователей
+        GetStudents();
+
+    </script>
+</body>
+</html>

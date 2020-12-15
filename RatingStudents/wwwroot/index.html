@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Rating</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <h2 class="text-center">Rating</h2>
+    <div class="container-fluid text-center">
+        <div class="row">
+            <div class="col-3">
+                <a href="index.html" class="nav-link">Rating</a>
+                <a href="subjects.html" class="nav-link">Subjects</a>
+                <a href="teachers.html" class="nav-link">Teachers</a>
+                <a href="students.html" class="nav-link">Students</a>
+            </div>
+            <div class="col-6">
+                <form name="ratingForm" class="form">
+                    <input type="hidden" name="id" value="0" />
+                    <div class="form-group col-12">
+                        <label for="studentId">StudentId:</label>
+                        <input class="form-control" name="studentId" type="number" />
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="subjectId">SubjectId:</label>
+                        <input class="form-control" name="subjectId" type="number" />
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="mark">Mark:</label>
+                        <input class="form-control" name="mark" type="number" />
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="dateRating">Date:</label>
+                        <input class="form-control" name="dateRating" type="date" />
+                    </div>
+                    <div class="panel-body">
+                        <button type="submit" id="submit" class="btn btn-dark">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br />
+    <table class="table table-condensed table-striped  col-md-12">
+        <thead><tr><th>Id</th><th>StudentId</th><th>SubjectId</th><th>Mark</th><th>Date</th><th></th></tr></thead>
+        <tbody>
+        </tbody>
+    </table>
+
+        <script>
+            async function GetRatings() {
+                const response = await fetch("/api/Ratings", {
+                    method: "GET",
+                    headers: { "Accept": "application/json" }
+                });
+                if (response.ok === true) {
+                    const ratings = await response.json();
+                    let rows = document.querySelector("tbody");
+                    ratings.forEach(rating => {
+                        rows.append(row(rating));
+                    });
+                }
+            }
+
+            async function GetRating(id) {
+                const response = await fetch("/api/Ratings/" + id, {
+                    method: "GET",
+                    headers: { "Accept": "application/json" }
+                });
+                if (response.ok === true) {
+                    const rating = await response.json();
+                    const form = document.forms["ratingForm"];
+                    form.elements["id"].value = rating.id;
+                    form.elements["studentId"].value = rating.studentId;
+                    form.elements["subjectId"].value = rating.subjectId;
+                    form.elements["mark"].value = rating.mark;
+                    form.elements["dateRating"].value = rating.dateRating;
+                }
+            }
+
+            async function CreateRating(ratStudentId, ratSubjectId, ratMark, ratDateRating) {
+                const response = await fetch("api/Ratings", {
+                    method: "POST",
+                    headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        studentId: parseInt(ratStudentId, 10),
+                        subjectId: parseInt(ratSubjectId, 10),
+                        mark: parseInt(ratMark, 10),
+                        dateRating: ratDateRating
+                    })
+                });
+                if (response.ok === true) {
+                    const rating = await response.json();
+                    reset();
+                    document.querySelector("tbody").append(row(rating));
+                }
+            }
+
+            async function EditRating(ratId, ratStudentId, ratSubjectId, ratMark, ratDateRating) {
+                const response = await fetch("api/Ratings/" + ratId, {
+                    method: "PUT",
+                    headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        id: parseInt(ratId, 10),
+                        studentId: parseInt(ratStudentId, 10),
+                        subjectId: parseInt(ratSubjectId, 10),
+                        mark: parseInt(ratMark, 10),
+                        dateRating: ratDateRating
+                    })
+                });
+                if (response.ok === true) {
+                    const rating = await response.json();
+                    reset();
+                    document.querySelector("tr[data-rowid='" + rating.id + "']").replaceWith(row(rating));
+                }
+            }
+
+            async function DeleteRating(id) {
+                const result = confirm("Do you want to delete this rating?");
+                if (result == true) {
+                    const response = await fetch("/api/Ratings/" + id, {
+                        method: "DELETE",
+                        headers: { "Accept": "application/json" }
+                    });
+                    if (response.ok === true) {
+                        const rating = await response.json();
+                        document.querySelector("tr[data-rowid='" + rating.id + "']").remove();
+                    }
+                }
+            }
+
+            document.forms["ratingForm"].addEventListener("submit", e => {
+                e.preventDefault();
+                const form = document.forms["ratingForm"];
+                const id = form.elements["id"].value;
+                const studentId = form.elements["studentId"].value;
+                const subjectId = form.elements["subjectId"].value;
+                const mark = form.elements["mark"].value;
+                const dateRating = form.elements["dateRating"].value;
+                if (id == 0)
+                    CreateRating(studentId, subjectId, mark, dateRating);
+                else
+                    EditRating(id, studentId, subjectId, mark, dateRating);
+            });
+
+            function reset() {
+                const form = document.forms["ratingForm"];
+                form.reset();
+                form.elements["id"].value = 0;
+            }
+
+            function row(rating) {
+
+                const tr = document.createElement("tr");
+                tr.setAttribute("data-rowid", rating.id);
+
+                const idTd = document.createElement("td");
+                idTd.append(rating.id);
+                tr.append(idTd);
+
+                const studentIdTd = document.createElement("td");
+                studentIdTd.append(rating.studentId);
+                tr.append(studentIdTd);
+
+                const subjectIdTd = document.createElement("td");
+                subjectIdTd.append(rating.subjectId);
+                tr.append(subjectIdTd);
+
+                const markTd = document.createElement("td");
+                markTd.append(rating.mark);
+                tr.append(markTd);
+
+                const dateRatingTd = document.createElement("td");
+                dateRatingTd.append(rating.dateRating);
+                tr.append(dateRatingTd);
+
+                const linksTd = document.createElement("td");
+
+                const editLink = document.createElement("a");
+                editLink.setAttribute("data-id", rating.id);
+                editLink.setAttribute("style", "cursor:pointer;padding:15px;");
+                editLink.append("Edit");
+                editLink.addEventListener("click", e => {
+
+                    e.preventDefault();
+                    GetRating(rating.id);
+                });
+                linksTd.append(editLink);
+
+                const removeLink = document.createElement("a");
+                removeLink.setAttribute("data-id", rating.id);
+                removeLink.setAttribute("style", "cursor:pointer;padding:15px;");
+                removeLink.append("Delete");
+                removeLink.addEventListener("click", e => {
+
+                    e.preventDefault();
+                    DeleteRating(rating.id);
+                });
+
+                linksTd.append(removeLink);
+
+                tr.appendChild(linksTd);
+
+                return tr;
+            }
+
+            // загрузка пользователей
+            GetRatings();
+
+        </script>
+</body>
+</html>
